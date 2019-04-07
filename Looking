@@ -1,0 +1,34 @@
+> import plotly
+
+data = dict(
+    type='sankey',
+    node = dict(
+      pad = 15,
+      thickness = 20,
+      line = dict(
+        color = "black",
+        width = 0.5
+      ),
+      label = ['<a href="https://plot.ly/python/sankey-diagram/">A1</a>', 
+                '<a href="https://plot.ly/python/sankey-diagram/">A2</a>', 
+                '<a href="https://plot.ly/python/sankey-diagram/">B1</a>', 
+                '<a href="https://plot.ly/python/sankey-diagram/">B2</a>', 
+                '<a href="https://plot.ly/python/sankey-diagram/">C1</a>', 
+                '<a href="https://plot.ly/python/sankey-diagram/">C2</a>'],
+      color = ["blue", "blue", "blue", "blue", "blue", "blue"]
+    ),
+    link = dict(
+      source = [0,1,0,2,3,3],
+      target = [2,3,3,4,4,5],
+      value = [8,4,2,8,4,2]
+  ))
+
+layout =  dict(
+    title = "Basic Sankey Diagram",
+    font = dict(
+      size = 10
+    )
+)
+
+fig = dict(data=[data], layout=layout)
+plotly.offline.plot(fig, filename = 'issue.html', auto_open=True)<
