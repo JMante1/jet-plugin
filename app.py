@@ -8,7 +8,7 @@ app = Flask(__name__)
 def imdoingfine():
     return("Not dead Jet")
 
-@app.route("/sankey/evaluate")
+@app.route("/sankey/evaluate", methods=["POST", "GET"])
 def evalsankey():
     return("Not dead Jet")
 
@@ -40,7 +40,7 @@ def wrapper():
 def imdoingfine2():
     return("Not dead Jet")
 
-@app.route("/bar/evaluate")
+@app.route("/bar/evaluate", methods=["POST", "GET"])
 def evalbar():
     return("Not dead Jet")
 
