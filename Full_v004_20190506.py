@@ -96,9 +96,13 @@ def sankeyalazach(url, instance, narcissus, displayid, humanname, parttype, narc
     sparqlquery = sparqlquery.replace('https://synbiohub.org/public/igem/BBa_E0040/1',url)
     r = requests.post(instance+"sparql", data = {"query":sparqlquery}, headers = {"Accept":"application/json"})
     print("Got R")
+    print(instance+"sparql")
+    print(sparqlquery)
     d = json.loads(r.text)
     #print(d)
     preflow = json_normalize(d['results']['bindings'])
+    print(preflow)
+    print(preflow.shape)
     preflow.columns = ['ad', 'at','centfol', 'cd', 'ct', 'count', 'dt','deff', 'dt1', 'displayId','rt', 'roletog', 'tt','title']
     preflow = preflow.drop(preflow.columns[[0,1, 3, 4, 6, 8,10,12]], axis=1)
     
@@ -107,6 +111,7 @@ def sankeyalazach(url, instance, narcissus, displayid, humanname, parttype, narc
     preflow = preflow[preflow['deff'] != url]
     preflow['deff'] = preflow.deff.replace('synbiohub.org', instance.replace('https://', '').replace('/',''), regex=True)
     preflow.title[preflow.title.isnull()] = preflow.displayId[preflow.title.isnull()]
+
     other = preflow
     prom = preflow.loc[preflow['roletog'] == 'http://identifiers.org/so/SO:0000167']
     other = preflow[preflow['roletog'] != 'http://identifiers.org/so/SO:0000167']

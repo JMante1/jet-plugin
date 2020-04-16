@@ -18,17 +18,18 @@ def wrapper():
     data = request.json
     url = data['complete_sbol'].replace('/sbol','')
     instance = data['instanceUrl'].replace('/sbol','')
+    toplevel = data['top_level']
     try:
         #instance = "synbiohub.org"
         print(url)
         print(instance)
         #instance = instance.replace('https://', '').replace('/','')
-        narcissus, displayid, humanname, parttype, narcissuscount = inputdata(url, instance)
+        narcissus, displayid, humanname, parttype, narcissuscount = inputdata(toplevel, instance)
         
        
         rolelink = findrolename(parttype)
         print(rolelink)
-        sankey = sankeyalazach(url, instance, narcissus, displayid, humanname, parttype, narcissuscount, "Parts Co-Located with "+ humanname + " (a "+rolelink+")")
+        sankey = sankeyalazach(toplevel, instance, narcissus, displayid, humanname, parttype, narcissuscount, "Parts Co-Located with "+ humanname + " (a "+rolelink+")")
         #print(sankey)
         return sankey
     except Exception as e:
@@ -44,25 +45,29 @@ def imdoingfine2():
 def evalbar():
     return("Not dead Jet")
 
+@app.route("/bar/evaluate", methods=["POST", "GET"])
+def evalbar():
+    return("Not dead Jet")
+
 
 @app.route("/bar/run", methods=["POST"])
 def wrapper2():
     data = request.json
     url = data['complete_sbol'].replace('/sbol','')
     instance = data['instanceUrl'].replace('/sbol','')
+    toplevel = data['top_level']
     try:
         #instance = "synbiohub.org"
         #instance = instance.replace('https://', '').replace('/','')
-        narcissus, displayid, humanname, parttype, narcissuscount = inputdata(url, instance)
+        narcissus, displayid, humanname, parttype, narcissuscount = inputdata(toplevel, instance)
         
-        bar1 = mostused(url, instance, narcissus, displayid, humanname, parttype, narcissuscount, "Top Ten Parts by Number of Uses Compared to "+ humanname)
+        bar1 = mostused(toplevel, instance, narcissus, displayid, humanname, parttype, narcissuscount, "Top Ten Parts by Number of Uses Compared to "+ humanname)
         
         rolelink = findrolename(parttype, plural=True)
-        bar2 = bytype(url,instance, narcissus, displayid, humanname, parttype, narcissuscount, "Top Ten " +rolelink+" by Number of Uses Compared to "+ humanname)
+        bar2 = bytype(toplevel,instance, narcissus, displayid, humanname, parttype, narcissuscount, "Top Ten " +rolelink+" by Number of Uses Compared to "+ humanname)
         
         toggledisplay = togglebars(bar1,bar2, displayid)
         return toggledisplay
     except Exception as e:
         print(e)
         abort(404)
-
