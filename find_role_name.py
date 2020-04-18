@@ -1,6 +1,7 @@
 def find_role_name(rolenumber, plural = False):  
     import requests
     from bs4 import BeautifulSoup
+    from capitalise_each_word import capitalise_each_word
     
     #url to get the part name
     url = 'http://www.ontobee.org/ontology/SO?iri=http://purl.obolibrary.org/obo/SO_'+role_number
