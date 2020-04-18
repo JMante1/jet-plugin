@@ -3,30 +3,56 @@ def inputdata(url, instance):
     import requests
     from pandas.io.json import json_normalize
     status = 200
-    ######################Initial part query and links query###################################
-    #url = 'https://synbiohub.org/public/igem/BBa_C0012/1'
+    
     req = requests.get(instance)
-    if req.status_code != 200:
+    if req.status_code != 200: #if synbiohub is offline return an error
         status = 424
     else:
         fl = open("sparql.txt", "r")
         sparqlquery = fl.read()
+        
+        #replace the uri in the pre written sparql query with the uri of the part
         sparqlquery = sparqlquery.replace('https://synbiohub.org/public/igem/BBa_B0012/1',url)
+        
+        #accept repsonses
         r = requests.post(instance+"sparql", data = {"query":sparqlquery}, headers = {"Accept":"application/json"})
-        #print(r.text)
+        
+        #format responses
         d = json.loads(r.text)
         a = json_normalize(d['results']['bindings'])
+        
+        #renames columns from ['count.datatype', 'count.type', 'count.value', 'def.type', 'def.value',
+        #   'displayId.type', 'displayId.value', 'role.type', 'role.value',
+        #   'title.type', 'title.value']
         a.columns = ['cd', 'ct','count', 'dt', 'deff', 'dist', 'displayId','rt', 'roletog', 'tt', 'title']
+        
+        #split column roletog at SO: to leave the http://identifiers.org/so in the column http
+        #and the roler number (e.g. 0000141) in the column role
         a[['http','role']] = a.roletog.str.split("SO:",expand=True) 
-        a = a.drop(a.columns[[0,1, 3, 5,7, 8, 9, 11]], axis=1)
-        narcissus = a[a.deff == url]
-        displayid = narcissus.iloc[0,2]
-        humanname = narcissus.iloc[0,3]
-        if str(humanname) == "nan":
-            humanname = displayid
-        parttype = narcissus.iloc[0,4]
-        narcissuscount = narcissus.iloc[0,0]
-    return (narcissus, displayid, humanname, parttype, narcissuscount)
+        
+        #drop unnecessary columns to leave: ['count', 'deff', 'displayId', 'title', 'role']
+        a = a.drop(['cd', 'ct', 'dt', 'dist', 'rt', 'roletog', 'tt', 'http'],axis=1)
+        
+        #creates a df that has only one row (where the deff is the part in question)
+        self_df = a[a.deff == url]
+        
+        #obtains the displayid using the self df
+        display_id = self_df['displayId'][0]
+        
+        #obtains the title/human readable name using the self df
+        title = self_df['title'][0]
+        
+        #in case there was no title
+        if str(title) == "nan":
+            humanname = display_id
+            
+        #obtains the role (as a number, e.g. 000141) using the self df
+        role = self_df['role'][0]
+        
+        #obtains the count using the self df
+        count = self_df['count'][0]
+        
+    return (self_df, display_id, title, role, count)
 
 def sankeygraph(filename, component_df, displayid, nodelabelcol, linkcol, nodecolourcol, sourcecol,targetcol,valuecol, linkcolourcol, graphtitle, urlnotname=True ):
     import plotly
