@@ -44,7 +44,7 @@ def input_data(url, instance):
         
         #in case there was no title
         if str(title) == "nan":
-            humanname = display_id
+            title = display_id
             
         #obtains the role (as a number, e.g. 000141) using the self df
         role = self_df['role'][0]
