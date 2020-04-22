@@ -23,7 +23,7 @@ def wrapper():
     data = request.json
     url = data['complete_sbol'].replace('/sbol','')
     instance = data['instanceUrl'].replace('/sbol','')
-    toplevel = data['top_level']
+    uri = data['top_level']
     try:
         #instance = "synbiohub.org"
         print(url)
@@ -38,7 +38,7 @@ def wrapper():
         #print(cwd)
 
         #retrieve information about the poi
-        self_df, display_id, title, role, count = input_data(top_level, instance)
+        self_df, display_id, title, role, count = input_data(uri, instance)
 
         #Find the role name in the ontology of the part of interest
         role_link = find_role_name(role, plural = False)
@@ -84,7 +84,7 @@ def wrapper2():
     data = request.json
     url = data['complete_sbol'].replace('/sbol','')
     instance = data['instanceUrl'].replace('/sbol','')
-    toplevel = data['top_level']
+    uri = data['top_level']
     try:
         #instance = 'https://synbiohub.org/'
         #url = 'https://synbiohub.org/public/igem/BBa_B0012/1'
@@ -102,7 +102,7 @@ def wrapper2():
         from toggle_bars import toggle_bars
 
         #create input data
-        self_df, display_id, title, role, count = input_data(top_level, instance)
+        self_df, display_id, title, role, count = input_data(uri, instance)
 
         #create and format data for the most_used barchart
         bar_df = most_used_bar(top_level, instance, display_id, title, role, 
