@@ -12,6 +12,7 @@ from most_used_by_type_bar import most_used_by_type_bar
 from toggle_bars import toggle_bars
 
 import os
+
 app = Flask(__name__)
 
 #flask run --host=0.0.0.0
@@ -31,18 +32,14 @@ def wrapper():
     instance = data['instanceUrl'].replace('/sbol','')
     uri = data['top_level']
     try:
-        #instance = "synbiohub.org"
-        #print(url)
-        #print(instance)
         
         #instance = 'https://synbiohub.org/'
         #url = 'https://synbiohub.org/public/igem/BBa_B0012/1'
-        #top_level = url
-
+        #uri = 'https://dev.synbiohub.org/public/igem/BBa_B0012/1'
+        
+        #get current working directory
         cwd = os.getcwd()
-        #print(cwd)
 
-        #print("inputting data")
         #retrieve information about the poi
         self_df, display_id, title, role, count = input_data(uri, instance)
 
@@ -93,12 +90,9 @@ def wrapper2():
     instance = data['instanceUrl'].replace('/sbol','')
     uri = data['top_level']
     try:
-        #instance = 'https://synbiohub.org/'
-        #url = 'https://synbiohub.org/public/igem/BBa_B0012/1'
-        #top_level = url
         
+        #current working directory
         cwd = os.getcwd()
-        #print(cwd)
 
         #create input data
         self_df, display_id, title, role, count = input_data(uri, instance)
