@@ -1,11 +1,12 @@
-def most_used_bar(top_level, instance, display_id, title, role, count):
-    import pandas as pd
-    import requests
-    import json
-    from pandas.io.json import json_normalize
+import pandas as pd
+import requests
+import json
+from pandas.io.json import json_normalize
+
+def most_used_bar(uri, instance, display_id, title, role, count):
     
     #get part url from uri
-    part_url = url.replace('https://synbiohub.org/', instance)
+    part_url = uri.replace(uri[:uri.find('/', 8)+1], instance)
     
     #read in the query to find the top most used parts
     fl = open("Most_Used_Query.txt", "r")
@@ -41,9 +42,9 @@ def most_used_bar(top_level, instance, display_id, title, role, count):
     bar_df = bar_df.iloc[0:robustness+1]
     
     #replace uris with urls
-    bar_df['deff'] = bar_df.deff.replace('synbiohub.org', 
-          instance.replace('https://', '').replace('/',''), regex=True)
-    
+    for idx, deff in bar_df['deff'].items():
+        bar_df['deff'][idx] = deff.replace(deff[:deff.find('/', 8)], instance)   
+
     #change the final row in the dataframe (usually row 11)
     #to contain the information about the poi
     bar_df.iloc[robustness] = [count,part_url,display_id,

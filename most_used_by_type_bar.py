@@ -1,12 +1,12 @@
-def most_used_by_type_bar(url, instance, display_id, title, role, count):
-    import pandas as pd
-    import requests
-    import json
-    from pandas.io.json import json_normalize
+import pandas as pd
+import requests
+import json
+from pandas.io.json import json_normalize
+
+def most_used_by_type_bar(uri, instance, display_id, title, role, count):
     
     #get part url from uri
-    part_url = url.replace('https://synbiohub.org/', instance)
-    
+    part_url = uri.replace(uri[:uri.find('/', 8)+1], instance)
     
     #open the query to collect the necessary data
     fl = open("Most_Used_By_Type_Query.txt", "r")
@@ -35,7 +35,7 @@ def most_used_by_type_bar(url, instance, display_id, title, role, count):
     bars_df = bars_df[bars_df.displayId != display_id]
     
     #incase the poi was dropped reset the index (needed for colours to work)
-    bar_df.reset_index(drop=True, inplace = True)
+    bars_df.reset_index(drop=True, inplace = True)
     
     #make sure it still works if less than 11 parts are present in the database
     robustness = min(10, len(bars_df)-1)
@@ -44,8 +44,9 @@ def most_used_by_type_bar(url, instance, display_id, title, role, count):
     bars_df = bars_df.iloc[0:robustness+1]
     
     #replace uris with urls
-    bars_df['deff'] = bars_df.deff.replace('synbiohub.org', 
-          instance.replace('https://', '').replace('/',''), regex=True)
+
+    for idx, deff in bars_df["deff"].items():
+        bars_df["deff"][idx] = deff.replace(deff[:deff.find('/', 8)+1], instance)
         
     #change the final row in the dataframe (usually row 11)
     #to contain the information about the poi

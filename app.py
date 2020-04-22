@@ -104,11 +104,11 @@ def wrapper2():
         self_df, display_id, title, role, count = input_data(uri, instance)
         
         #create and format data for the most_used barchart
-        bar_df = most_used_bar(top_level, instance, display_id, title, role, 
+        bar_df = most_used_bar(uri, instance, display_id, title, role, 
                         count)
         
         #graph title for most used barchart
-        graph_title = f'Top Ten Parts by Number of Uses Compared to <a href="{top_level}" target="_blank">{title}</a>'
+        graph_title = f'Top Ten Parts by Number of Uses Compared to <a href="{url}" target="_blank">{title}</a>'
 
         #where to save the file
         filename1= os.path.join(cwd, f'bar1_{display_id}_.html')
@@ -125,11 +125,11 @@ def wrapper2():
         #find poi role ontology link
         role_link = find_role_name(role, plural = False)
 
-        bar_df = most_used_by_type_bar(top_level,instance, display_id, title, 
+        bar_df = most_used_by_type_bar(uri,instance, display_id, title, 
                       role, count)
 
         #graph title for most used barchart
-        graph_title = f'Top Ten {role_link} by Number of Uses Compared to <a href="{top_level}" target="_blank">{title}</a>'
+        graph_title = f'Top Ten {role_link} by Number of Uses Compared to <a href="{url}" target="_blank">{title}</a>'
 
         #where to save the file
         filename2= os.path.join(cwd, f'bar2_{display_id}_.html')
