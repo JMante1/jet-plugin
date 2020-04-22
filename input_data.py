@@ -1,7 +1,8 @@
+import json
+import requests
+from pandas.io.json import json_normalize
+
 def input_data(uri, instance):
-    import json
-    import requests
-    from pandas.io.json import json_normalize
     status = 200
     
     req = requests.get(instance)
@@ -13,14 +14,14 @@ def input_data(uri, instance):
         
         #replace the uri in the pre written sparql query with the uri of the part
         sparqlquery = sparqlquery.replace('https://synbiohub.org/public/igem/BBa_B0012/1',uri)
-        
+
         #accept repsonses
         r = requests.post(instance+"sparql", data = {"query":sparqlquery}, headers = {"Accept":"application/json"})
         
         #format responses
         d = json.loads(r.text)
         a = json_normalize(d['results']['bindings'])
-        
+
         #renames columns from ['count.datatype', 'count.type', 'count.value', 'def.type', 'def.value',
         #   'displayId.type', 'displayId.value', 'role.type', 'role.value',
         #   'title.type', 'title.value']

@@ -50,7 +50,8 @@ def sankey(url, uri, title, instance):
     
     #makes sure uris point to the correct instance (even for dev.synbiohub.org)
     for index, deff in order_df['deff'].items():
-        order_df['deff'][index] = deff.replace(deff[:deff.find("/", beg=8)+1], instance)
+        print(deff)
+        order_df['deff'][index] = deff.replace(deff[:deff.find("/", 8)+1], instance)
         
     #order_df['deff'] = order_df.deff.replace('synbiohub.org', instance.replace('https://', '').replace('/',''), regex=True)
     

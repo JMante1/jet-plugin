@@ -5,6 +5,12 @@ from find_role_name import find_role_name
 from sankey import sankey
 from sankey_graph import sankey_graph
 from retrieve_html import retrieve_html
+
+from most_used_bar import most_used_bar
+from bar_plot import bar_plot
+from most_used_by_type_bar import most_used_by_type_bar
+from toggle_bars import toggle_bars
+
 import os
 app = Flask(__name__)
 
@@ -33,13 +39,14 @@ def wrapper():
         #url = 'https://synbiohub.org/public/igem/BBa_B0012/1'
         #top_level = url
 
-        
         cwd = os.getcwd()
-        #print(cwd)
+        print(cwd)
 
+        print("inputting data")
         #retrieve information about the poi
         self_df, display_id, title, role, count = input_data(uri, instance)
 
+        print("Find role name")
         #Find the role name in the ontology of the part of interest
         role_link = find_role_name(role, plural = False)
 
@@ -55,12 +62,12 @@ def wrapper():
                     'Link Color', sankey_title, url_not_name=False) 
 
         #obtain the html from the sankey diagram
-        sankey = retrieve_html(filename)
+        result = retrieve_html(filename)
 
         #delete the copy of the sankey diagram on the server
         os.remove(filename)
        
-        return sankey
+        return result 
     except Exception as e:
         print(e)
         abort(404)
@@ -93,19 +100,13 @@ def wrapper2():
         cwd = os.getcwd()
         print(cwd)
 
-        from most_used_bar import most_used_bar
-        from bar_plot import bar_plot
-        from most_used_by_type import most_used_by_type
-        from retrieve_html import retrieve_html
-        from toggle_bars import toggle_bars
-
         #create input data
         self_df, display_id, title, role, count = input_data(uri, instance)
-
+        
         #create and format data for the most_used barchart
         bar_df = most_used_bar(top_level, instance, display_id, title, role, 
                         count)
-
+        
         #graph title for most used barchart
         graph_title = f'Top Ten Parts by Number of Uses Compared to <a href="{top_level}" target="_blank">{title}</a>'
 
