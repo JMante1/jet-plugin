@@ -49,9 +49,10 @@ def sankey(url, title, instance):
     order_df['centfol'] = order_df['centfol'].apply(pd.to_numeric)
     
     #makes sure uris point to the correct instance (even for dev.synbiohub.org)
-    deffs = []
-    for deff in order_df['deff']:
-        deffs.append(deff.replace(deff[:deff.find("/", beg=8)+], instance)
+    for index, deff in enumberate(order_df['deff']):
+        order_df['deff'][index] = deff.replace(deff[:deff.find("/", beg=8)+1], instance
+    
+    
     #order_df['deff'] = order_df.deff.replace('synbiohub.org', instance.replace('https://', '').replace('/',''), regex=True)
     
     #parts which have no title have the title field filled in using the displayId field
