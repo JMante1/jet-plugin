@@ -44,7 +44,7 @@ def wrapper():
         role_link = find_role_name(role, plural = False)
 
         #create data for the sankey diagram and format it correctly
-        df_sankey = sankey(url, title, instance)
+        df_sankey = sankey(url, uri, title, instance)
 
         sankey_title = "Parts Co-Located with "+ title + " (a "+role_link+")"
         filename= os.path.join(cwd, f'sankey_{display_id}_.html')
