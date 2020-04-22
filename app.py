@@ -5,7 +5,6 @@ from find_role_name import find_role_name
 from sankey import sankey
 from sankey_graph import sankey_graph
 from retrieve_html import retrieve_html
-from Full_v004_20190506 import *
 import os
 app = Flask(__name__)
 
