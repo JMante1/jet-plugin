@@ -12,7 +12,7 @@ def sankey(url, title, instance):
     
      
     #read in the sparql query to perform
-    fl = open("PrecedingPercent.txt", "r")
+    fl = open("Preceding_Percent_Query.txt", "r")
     sparqlquery = fl.read()
     
     #substitute in the name of the particular part
