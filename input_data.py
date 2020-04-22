@@ -1,4 +1,4 @@
-def input_data(url, instance):
+def input_data(uri, instance):
     import json
     import requests
     from pandas.io.json import json_normalize
@@ -12,7 +12,7 @@ def input_data(url, instance):
         sparqlquery = fl.read()
         
         #replace the uri in the pre written sparql query with the uri of the part
-        sparqlquery = sparqlquery.replace('https://synbiohub.org/public/igem/BBa_B0012/1',url)
+        sparqlquery = sparqlquery.replace('https://synbiohub.org/public/igem/BBa_B0012/1',uri)
         
         #accept repsonses
         r = requests.post(instance+"sparql", data = {"query":sparqlquery}, headers = {"Accept":"application/json"})
@@ -34,7 +34,7 @@ def input_data(url, instance):
         a = a.drop(['cd', 'ct', 'dt', 'dist', 'rt', 'roletog', 'tt', 'http'],axis=1)
         
         #creates a df that has only one row (where the deff is the part in question)
-        self_df = a[a.deff == url]
+        self_df = a[a.deff == uri]
         
         #obtains the displayid using the self df
         display_id = self_df['displayId'][0]
