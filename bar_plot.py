@@ -1,7 +1,8 @@
-def bar_plot (names,freq, colour, bar_df, graph_title, filename, url_link, display_id):
-    import plotly
-    import plotly.graph_objs as go
+import plotly
+import plotly.graph_objs as go
 
+def bar_plot (names,freq, colour, bar_df, graph_title, filename, url_link, display_id):
+    
     #drop any blank names or links
     xnames = bar_df[names].dropna(axis=0, how='any')
     xlinks = bar_df[url_link].dropna(axis=0, how='any')
