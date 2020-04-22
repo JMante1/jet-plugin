@@ -32,21 +32,21 @@ def wrapper():
     uri = data['top_level']
     try:
         #instance = "synbiohub.org"
-        print(url)
-        print(instance)
+        #print(url)
+        #print(instance)
         
         #instance = 'https://synbiohub.org/'
         #url = 'https://synbiohub.org/public/igem/BBa_B0012/1'
         #top_level = url
 
         cwd = os.getcwd()
-        print(cwd)
+        #print(cwd)
 
-        print("inputting data")
+        #print("inputting data")
         #retrieve information about the poi
         self_df, display_id, title, role, count = input_data(uri, instance)
 
-        print("Find role name")
+        #print("Find role name")
         #Find the role name in the ontology of the part of interest
         role_link = find_role_name(role, plural = False)
 
@@ -98,7 +98,7 @@ def wrapper2():
         #top_level = url
         
         cwd = os.getcwd()
-        print(cwd)
+        #print(cwd)
 
         #create input data
         self_df, display_id, title, role, count = input_data(uri, instance)
