@@ -47,7 +47,7 @@ def wrapper():
         df_sankey = sankey(url, title, instance)
 
         sankey_title = "Parts Co-Located with "+ title + " (a "+role_link+")"
-        filename= f'{cwd}\\sankey_{display_id}_.html'
+        filename= os.path.join({cwd}, f'sankey_{display_id}_.html')
 
         #create the sankey diagram
         sankey_graph(filename, df_sankey, display_id, 'Node, Label',
