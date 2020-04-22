@@ -1,9 +1,9 @@
+import requests
+import json
+import pandas as pd
+from pandas.io.json import json_normalize
+
 def sankey(url, title, instance):
-    import requests
-    import json
-    import pandas as pd
-    from pandas.io.json import json_normalize
-    
     #to create the sankey diagram two linked tables are needed
     #1) about nodes: indexes, names and colours
     #2) about the links: from node a (index), to node b (index), width, colour
@@ -16,7 +16,7 @@ def sankey(url, title, instance):
     sparqlquery = fl.read()
     
     #substitute in the name of the particular part
-    sparqlquery = sparqlquery.replace('https://synbiohub.org/public/igem/BBa_E0040/1',url)
+    sparqlquery = sparqlquery.replace('https://synbiohub.org/public/igem/BBa_E0040/1',uri)
     r = requests.post(instance+"sparql", data = {"query":sparqlquery}, headers = {"Accept":"application/json"})
     
     #reformat query results
@@ -49,7 +49,10 @@ def sankey(url, title, instance):
     order_df['centfol'] = order_df['centfol'].apply(pd.to_numeric)
     
     #makes sure uris point to the correct instance (even for dev.synbiohub.org)
-    order_df['deff'] = order_df.deff.replace('synbiohub.org', instance.replace('https://', '').replace('/',''), regex=True)
+    deffs = []
+    for deff in order_df['deff']:
+        deffs.append(deff.replace(deff[:deff.find("/", beg=8)+], instance)
+    #order_df['deff'] = order_df.deff.replace('synbiohub.org', instance.replace('https://', '').replace('/',''), regex=True)
     
     #parts which have no title have the title field filled in using the displayId field
     order_df.title[order_df.title.isnull()] = order_df.displayId[order_df.title.isnull()]
