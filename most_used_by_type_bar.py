@@ -35,13 +35,13 @@ def most_used_by_type_bar(url, instance, display_id, title, role, count):
     bars_df = bars_df[bars_df.displayId != display_id]
     
     #make sure it still works if less than 11 parts are present in the database
-    robustness = min(10, len(bar_df)-1)
+    robustness = min(10, len(bars_df)-1)
     
     #only accept the top robustness parts (usually the top eleven most used parts)
-    bars_df = bar_df.iloc[0:robustness+1]
+    bars_df = bars_df.iloc[0:robustness+1]
     
     #replace uris with urls
-    bars_df['deff'] = bar_df.deff.replace('synbiohub.org', 
+    bars_df['deff'] = bars_df.deff.replace('synbiohub.org', 
           instance.replace('https://', '').replace('/',''), regex=True)
         
     #change the final row in the dataframe (usually row 11)
