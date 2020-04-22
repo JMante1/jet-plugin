@@ -3,8 +3,7 @@ import plotly
 def sankey_graph(filename, component_df, displayid, node_label_col, url_col,
                 node_colour_col, source_col,target_col,value_col,
                 link_colour_col, graph_title, url_not_name=True ):
-    import plotly
-    
+  
     #removes any NAs from the list of node names
     xnames = component_df[node_label_col].dropna(axis=0, how='any')
     
