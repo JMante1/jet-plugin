@@ -49,7 +49,7 @@ def sankey(url, title, instance):
     order_df['centfol'] = order_df['centfol'].apply(pd.to_numeric)
     
     #makes sure uris point to the correct instance (even for dev.synbiohub.org)
-    for index, deff in enumberate(order_df['deff']):
+    for index, deff in order_df['deff'].items():
         order_df['deff'][index] = deff.replace(deff[:deff.find("/", beg=8)+1], instance
     
     
