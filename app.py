@@ -89,9 +89,7 @@ def wrapper2():
         #instance = 'https://synbiohub.org/'
         #url = 'https://synbiohub.org/public/igem/BBa_B0012/1'
         #top_level = url
-
-        import os
-
+        
         cwd = os.getcwd()
         print(cwd)
 
