@@ -87,17 +87,68 @@ def wrapper2():
     instance = data['instanceUrl'].replace('/sbol','')
     toplevel = data['top_level']
     try:
-        #instance = "synbiohub.org"
-        #instance = instance.replace('https://', '').replace('/','')
-        narcissus, displayid, humanname, parttype, narcissuscount = inputdata(toplevel, instance)
-        
-        bar1 = mostused(toplevel, instance, narcissus, displayid, humanname, parttype, narcissuscount, "Top Ten Parts by Number of Uses Compared to "+ humanname)
-        
-        rolelink = findrolename(parttype, plural=True)
-        bar2 = bytype(toplevel,instance, narcissus, displayid, humanname, parttype, narcissuscount, "Top Ten " +rolelink+" by Number of Uses Compared to "+ humanname)
-        
-        toggledisplay = togglebars(bar1,bar2, displayid)
-        return toggledisplay
+        #instance = 'https://synbiohub.org/'
+        #url = 'https://synbiohub.org/public/igem/BBa_B0012/1'
+        #top_level = url
+
+        import os
+
+        cwd = os.getcwd()
+        print(cwd)
+
+        from most_used_bar import most_used_bar
+        from bar_plot import bar_plot
+        from most_used_by_type import most_used_by_type
+        from retrieve_html import retrieve_html
+        from toggle_bars import toggle_bars
+
+        #create input data
+        self_df, display_id, title, role, count = input_data(top_level, instance)
+
+        #create and format data for the most_used barchart
+        bar_df = most_used_bar(top_level, instance, display_id, title, role, 
+                        count)
+
+        #graph title for most used barchart
+        graph_title = f'Top Ten Parts by Number of Uses Compared to <a href="{top_level}" target="_blank">{title}</a>'
+
+        #where to save the file
+        filename1= f'{cwd}\\bar1_{display_id}_.html'
+
+        #create the most used barchart
+        bar_plot('title','count','color',bar_df, graph_title, filename1, 'deff',display_id)
+
+        #retrieve html
+        most_used = retrieve_html(filename1)
+
+        #remove file
+        os.remove(filename1)
+
+        #find poi role ontology link
+        role_link = find_role_name(role, plural = False)
+
+        bar_df = most_used_by_type_bar(top_level,instance, display_id, title, 
+                      role, count)
+
+        #graph title for most used barchart
+        graph_title = f'Top Ten {role_link} by Number of Uses Compared to <a href="{top_level}" target="_blank">{title}</a>'
+
+        #where to save the file
+        filename2= f'{cwd}\\bar2_{display_id}_.html'
+
+        #create the most used barchart
+        bar_plot('title','count','color',bar_df, graph_title, filename2, 'deff',display_id)
+
+        #retrieve html
+        by_role = retrieve_html(filename2)
+
+        #remove file
+        os.remove(filename2)
+
+        #create bar toggle html
+        toggle_display = toggle_bars(most_used,by_role, display_id)
+
+        return toggle_display
     except Exception as e:
         print(e)
         abort(404)
