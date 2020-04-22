@@ -34,7 +34,7 @@ def wrapper():
         #top_level = url
 
         
-        #cwd = os.getcwd()
+        cwd = os.getcwd()
         #print(cwd)
 
         #retrieve information about the poi
@@ -47,7 +47,7 @@ def wrapper():
         df_sankey = sankey(url, title, instance)
 
         sankey_title = "Parts Co-Located with "+ title + " (a "+role_link+")"
-        filename= os.path.join({cwd}, f'sankey_{display_id}_.html')
+        filename= os.path.join(cwd, f'sankey_{display_id}_.html')
 
         #create the sankey diagram
         sankey_graph(filename, df_sankey, display_id, 'Node, Label',
@@ -112,7 +112,7 @@ def wrapper2():
         graph_title = f'Top Ten Parts by Number of Uses Compared to <a href="{top_level}" target="_blank">{title}</a>'
 
         #where to save the file
-        filename1= f'{cwd}\\bar1_{display_id}_.html'
+        filename1= os.path.join(cwd, f'bar1_{display_id}_.html')
 
         #create the most used barchart
         bar_plot('title','count','color',bar_df, graph_title, filename1, 'deff',display_id)
@@ -133,7 +133,7 @@ def wrapper2():
         graph_title = f'Top Ten {role_link} by Number of Uses Compared to <a href="{top_level}" target="_blank">{title}</a>'
 
         #where to save the file
-        filename2= f'{cwd}\\bar2_{display_id}_.html'
+        filename2= os.path.join(cwd, f'bar2_{display_id}_.html')
 
         #create the most used barchart
         bar_plot('title','count','color',bar_df, graph_title, filename2, 'deff',display_id)
