@@ -42,6 +42,33 @@ def sankey_graph(filename, component_df, displayid, node_label_col, url_col,
             value = component_df[value_col].dropna(axis=0, how='any'), #with this thickness/width
             color = component_df[link_colour_col].dropna(axis=0, how='any'),)) #in this colour
     
+    data_trace = {
+      "type": "sankey",
+      "domain": {
+        "x": [0, 1],
+        "y": [0, 1]
+      },
+      "orientation": "h",
+      "valueformat": ".0f",
+      "arrangement": "perpendicular",
+      "node": {
+        "pad": 10,
+        "thickness": 30,
+        "line": {
+          "color": "black",
+          "width": 0.5
+        },
+        "label": sourcethings
+        "color": component_df[node_colour_col].dropna(axis=0, how='any'),), #colours of nodes
+        "link": {
+          "source": component_df[source_col].dropna(axis=0, how='any'), #link goes from this source
+          "target": component_df[target_col].dropna(axis=0, how='any'), #to this target
+          "value": component_df[value_col].dropna(axis=0, how='any'), #with this thickness/width
+          "color": component_df[link_colour_col].dropna(axis=0, how='any')
+        }
+      }
+    }
+    
     layout = dict(
         title = graph_title, #add a title to the figure
         height = 772, #set figure height
