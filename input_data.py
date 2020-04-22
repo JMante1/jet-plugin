@@ -8,7 +8,7 @@ def input_data(url, instance):
     if req.status_code != 200: #if synbiohub is offline return an error
         status = 424
     else:
-        fl = open("sparql.txt", "r")
+        fl = open("Input_Query.txt", "r")
         sparqlquery = fl.read()
         
         #replace the uri in the pre written sparql query with the uri of the part
