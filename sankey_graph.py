@@ -1,3 +1,5 @@
+import plotly
+
 def sankey_graph(filename, component_df, displayid, node_label_col, url_col,
                 node_colour_col, source_col,target_col,value_col,
                 link_colour_col, graph_title, url_not_name=True ):
