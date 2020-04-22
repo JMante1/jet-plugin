@@ -31,6 +31,9 @@ def most_used_bar(top_level, instance, display_id, title, role, count):
     #make sure the poi is not in the bar_df
     bar_df = bar_df[bar_df.displayId != display_id]
     
+    #incase the poi was dropped reset the index (needed for colours to work)
+    bar_df.reset_index(drop=True)
+    
     #make sure it still works if less than 11 parts are present in the database
     robustness = min(10, len(bar_df)-1)
     
