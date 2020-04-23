@@ -108,7 +108,7 @@ def wrapper2():
         filename1= os.path.join(cwd, f'bar1_{display_id}_.html')
 
         #create the most used barchart
-        bar_plot('title','count','color',bar_df, graph_title, filename1, 'deff',display_id)
+        bar_plot('title','count','color',bar_df, graph_title, filename1, 'deff')
 
         #retrieve html
         most_used = retrieve_html(filename1)
@@ -129,7 +129,7 @@ def wrapper2():
         filename2= os.path.join(cwd, f'bar2_{display_id}_.html')
 
         #create the most used barchart
-        bar_plot('title','count','color',bar_df, graph_title, filename2, 'deff',display_id)
+        bar_plot('title','count','color',bar_df, graph_title, filename2, 'deff')
 
         #retrieve html
         by_role = retrieve_html(filename2)
