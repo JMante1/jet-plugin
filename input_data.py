@@ -3,6 +3,57 @@ import requests
 from pandas.io.json import json_normalize
 
 def input_data(uri, instance):
+    """
+    Finds information about an SBOL part based on its uri
+    
+    Requirements
+    -------
+    import json
+    import requests
+    from pandas.io.json import json_normalize
+    Input_Query.txt
+    
+    Parameters
+    ----------
+    uri : string
+        the unique identifier of a part, note that due to spoofing it may not be the same as the url
+        e.g. uri = 'https://synbiohub.org/public/igem/BBa_E0040/1' (url may be https://dev.synbiohub.org/public/igem/BBa_E0040/1)
+    instance : string
+        the synbiohub instance where information is to be retrieved from (where the sparql query is to be run)
+        e.g. 'https://synbiohub.org/'
+    
+    Returns
+    -------
+    self_df: pandas dataframe, shape()
+        Dataframe with the columns: 'count' (same as count below), 'deff' (uri), 'displayId' (same as display_id below),
+        'title' (same as title below), 'role' (same as role below)
+    display_id: string
+        The display id of the poi e.g. 'BBa_E0040'
+    title: string
+        The human readable name of the poi e.g. 'GFP'
+    role: string
+        The number (as a string) of the sequence ontology of the role of the poi e.g. '0000316'
+        
+    count: integer
+        The number of times the poi is used (how often it is a subpart) e.g. 2348
+       
+    Example
+    --------
+    self_df, display_id, title, role, count = input_data('https://synbiohub.org/public/igem/BBa_E0040/1', 'https:dev.synbiohub.org/')
+    
+    Output: 
+        self_df: (dataframe with 1 row with index zero, columns shown below in the correct order)
+            count                                                  2348
+            deff          https://synbiohub.org/public/igem/BBa_E0040/1
+            display_id                                        BBa_E0040
+            title                                                   GFP
+            role                                                0000316
+        display_id: 'BBa_E0040'
+        title: 'GFP'
+        role: '0000316'
+        count: 2348
+    """
+        
     status = 200
     
     req = requests.get(instance)
