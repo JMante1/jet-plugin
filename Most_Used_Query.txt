@@ -1,0 +1,27 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX sbh: <http://wiki.synbiohub.org/wiki/Terms/synbiohub#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX sbol: <http://sbols.org/v2#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX purl: <http://purl.obolibrary.org/obo/>
+
+SELECT
+	?def
+	?displayId
+	?title
+	(count(?def) as ?count)
+	?role
+WHERE {
+  	?s sbol:component ?comp .
+  	?comp sbol:definition ?def .
+        filter (regex(?role, 'http://identifiers.org/so/SO:')) .
+	OPTIONAL {?def sbol:role ?role} .  
+	OPTIONAL {?def sbol:displayId ?displayId} .
+	OPTIONAL {?def dcterms:title ?title} .
+  }
+ORDER BY DESC (?count) 
+
+#OFFSET 0 LIMIT 50

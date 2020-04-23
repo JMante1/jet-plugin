@@ -1,0 +1,39 @@
+<html>
+
+<body>
+<input type="checkbox" name="type" id="bytype" /><label for="bytype">Type Matters</label>
+
+<div id="type">
+    <h2>By type</h2>
+</div>
+
+<div id="notype">
+    <h2>Frequency</h2>
+</div>
+
+<script type="text/javascript">
+document.getElementById('type').style.display = 'none';
+document.getElementById('notype').style.display = 'block';
+
+var inputs = document.getElementsByTagName('input');
+
+function dispp() {
+    if (bytype.checked) {
+        document.getElementById('type').style.display = 'block';
+        document.getElementById('notype').style.display = 'none';
+    }
+    else {
+        document.getElementById('type').style.display = 'none';
+        document.getElementById('notype').style.display = 'block';
+    }
+}
+
+for (i = 0; i < inputs.length; i++) {
+    if (inputs[i].type.toLowerCase() == 'checkbox') {
+        inputs[i].onchange = dispp;
+    }
+}
+</script>
+</body>
+
+</html>

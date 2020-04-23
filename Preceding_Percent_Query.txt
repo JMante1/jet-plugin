@@ -1,0 +1,49 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX sbh: <http://wiki.synbiohub.org/wiki/Terms/synbiohub#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX sbol: <http://sbols.org/v2#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX purl: <http://purl.obolibrary.org/obo/>
+
+select
+	#?s
+	?def2
+	(COUNT(?def2) AS ?count)
+	?role
+	?title
+	?displayId
+	(AVG(xsd:integer(?preceeding)) AS ?average_preceeding) # 1 means all preceeding, 0 means all following, is percentage preceeding
+	#?preceeding #if negative then component ends before start of queried component
+	#?start
+	#?end 
+	#?startb
+	#?endb
+	#?def
+where {
+	?s sbol:component ?comp .
+	?s sbol:component ?comp2 .
+	?comp sbol:definition ?def .
+	?comp2 sbol:definition ?def2 .
+	?s sbol:sequenceAnnotation ?sa .
+	?sa sbol:component ?comp2 .
+  	?sa sbol:location ?loc .
+	#?loc sbol:start ?start .
+	?loc sbol:end ?end .
+	?s sbol:sequenceAnnotation ?sb .
+  	?sb sbol:component ?comp .
+  	?sb sbol:location ?locb .
+  	?locb sbol:start ?startb .
+  	#?locb sbol:end ?endb .
+  	OPTIONAL {?def2 sbol:role ?role} . 
+  	OPTIONAL {?def2 dcterms:title ?title} .
+	OPTIONAL {?def2 sbol:displayId ?displayId} .
+  	BIND(if(xsd:integer(?end)-xsd:integer(?startb) < 0, "0", "1") AS ?preceeding) .
+	filter(?def = <https://synbiohub.org/public/igem/BBa_E0040/1>) .
+  	filter(?def2 != <https://synbiohub.org/public/igem/BBa_E0040/1>) .
+  	filter (regex(?role, 'http://identifiers.org/so/SO:')) .
+ 	#filter (?role = <http://identifiers.org/so/SO:0000167> || (?role = <http://identifiers.org/so/SO:0000139>)|| (?role = <http://identifiers.org/so/SO:0000316>)|| (?role = <http://identifiers.org/so/SO:0000141>)) .
+    }
+ORDER BY DESC(?count)
