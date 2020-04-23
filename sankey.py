@@ -4,13 +4,53 @@ import pandas as pd
 from pandas.io.json import json_normalize
 
 def sankey(url, uri, title, instance):
-    #to create the sankey diagram two linked tables are needed
-    #1) about nodes: indexes, names and colours
-    #2) about the links: from node a (index), to node b (index), width, colour
+    """
+    This function creates the table needed to make the sankey diagram
+    to create the sankey diagram two linked tables are needed
+    1) about nodes: indexes, names and colours
+    2) about the links: from node a (index), to node b (index), width, colour
     
-    #the creation of this table for the particular part referenced by the url is given her
+    Requirements
+    -------
+    import requests
+    import json
+    import pandas as pd
+    from pandas.io.json import json_normalize
+    Preceding_Percent_Query.txt
     
-     
+    
+    Parameters
+    ----------
+    url : string
+        the url that links to the part, note that due to spoofing it may not be the same as the uri
+        e.g. url = 'https://dev.synbiohub.org/public/igem/BBa_E0040/1' (uri may be https://synbiohub.org/public/igem/BBa_E0040/1)
+    uri : string
+        the unique identifier of a part, note that due to spoofing it may not be the same as the url
+        e.g. uri = 'https://synbiohub.org/public/igem/BBa_E0040/1' (url may be https://dev.synbiohub.org/public/igem/BBa_E0040/1)
+    title: string
+        The human readable name of the poi e.g. 'GFP'
+    instance : string
+        the synbiohub instance where information is to be retrieved from (where the sparql query is to be run)
+        e.g. 'https://synbiohub.org/'
+    
+    Returns
+    -------
+    skey: pandas dataframe, shape(n, 7)
+        Dataframe with the columns: 'Source' (integer, from here),	'Target' (integer, to here), 'Value' (integer, width of link),
+        'Color' (string, node colour (hex) e.g. #04BB3D), 'Node, Label' (str, name of the node e.g. GFP), 
+        'Link' (str, link for the node e.g. https://synbiohub.org/public/igem/BBa_R0040/1),
+        'Link Color' (string, (hex) e.g. rgba(4,187,61,0.5)
+       
+    Example
+    --------
+    uri = 'https://synbiohub.org/public/igem/BBa_E0040/1'
+    url = 'https://dev.synbiohub.org/public/igem/BBa_E0040/1'
+    instance = 'https://dev.synbiohub.org/'
+    title = 'GFP'
+    
+    skey = sankey(url, uri, title, instance)
+    """
+    
     #read in the sparql query to perform
     fl = open("Preceding_Percent_Query.txt", "r")
     sparqlquery = fl.read()
