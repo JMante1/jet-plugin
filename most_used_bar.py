@@ -115,7 +115,7 @@ def most_used_bar(uri, instance, display_id, title, role, count):
         'http://identifiers.org/so/SO:0000167': 'rgba(4,187,61,1)', 
         'http://identifiers.org/so/SO:0000139':'rgba(149,110,219,1)',
         'http://identifiers.org/so/SO:0000316':'rgba(119,157,205,1)',
-        'http://identifiers.org/so/SO:0000141':'rgba(202,58,32,1)',
+        'http://identifiers.org/so/SO:0000141':'rgba(202,58,32,1)'
         
     }
     
