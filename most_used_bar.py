@@ -66,7 +66,7 @@ def most_used_bar(uri, instance, display_id, title, role, count):
     """
     
     #get part url from uri
-    part_url = uri.replace(uri[:uri.find('/', 8)+2], instance)
+    part_url = uri.replace(uri[:uri.find('/', 8)+1], instance)
     
     #read in the query to find the top most used parts
     fl = open("Most_Used_Query.txt", "r")
@@ -103,7 +103,7 @@ def most_used_bar(uri, instance, display_id, title, role, count):
     
     #replace uris with urls
     for idx, deff in bar_df['deff'].items():
-        bar_df['deff'][idx] = deff.replace(deff[:deff.find('/', 8)], instance)   
+        bar_df['deff'][idx] = deff.replace(deff[:deff.find('/', 8)+1], instance)   
 
     #change the final row in the dataframe (usually row 11)
     #to contain the information about the poi
