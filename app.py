@@ -54,7 +54,7 @@ def wrapper():
         filename= os.path.join(cwd, f'sankey_{display_id}_.html')
 
         #create the sankey diagram
-        sankey_graph(filename, df_sankey, display_id, 'Node, Label',
+        sankey_graph(filename, df_sankey, 'Node, Label',
                     'Link', 'Color', 'Source','Target', 'Value',
                     'Link Color', sankey_title, url_not_name=False) 
 
