@@ -138,7 +138,7 @@ def wrapper2():
         os.remove(filename2)
 
         #create bar toggle html
-        toggle_display = toggle_bars(most_used,by_role, display_id)
+        toggle_display = toggle_bars(most_used,by_role)
 
         return toggle_display
     except Exception as e:
