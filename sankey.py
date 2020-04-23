@@ -2,6 +2,7 @@ import requests
 import json
 import pandas as pd
 from pandas.io.json import json_normalize
+from uri_to_url import uri_to_url
 
 def sankey(url, uri, title, instance):
     """
@@ -89,11 +90,9 @@ def sankey(url, uri, title, instance):
     order_df['centfol'] = order_df['centfol'].apply(pd.to_numeric)
     
     #makes sure uris point to the correct instance (even for dev.synbiohub.org)
-    for index, deff in order_df['deff'].items():
-        #print(deff)
-        order_df['deff'][index] = deff.replace(deff[:deff.find("/", 8)+1], instance)
-        
-    #order_df['deff'] = order_df.deff.replace('synbiohub.org', instance.replace('https://', '').replace('/',''), regex=True)
+    #if spoofing is happening the uri instance is different than the instance
+    spoofed_instance = uri[:uri.find('/', 8)+1]
+    order_df['deff'] = uri_to_url(order_df['deff'], instance, spoofed_instance)
     
     #parts which have no title have the title field filled in using the displayId field
     order_df.title[order_df.title.isnull()] = order_df.displayId[order_df.title.isnull()]
@@ -220,7 +219,6 @@ def sankey(url, uri, title, instance):
     list_target += [target]*num_colocated_parts
     
     """Add POI node"""
-    #add the name
     node_label.append(title)
     
     #add the uri/url link
