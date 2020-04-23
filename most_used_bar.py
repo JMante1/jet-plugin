@@ -4,6 +4,45 @@ import json
 from pandas.io.json import json_normalize
 
 def most_used_bar(uri, instance, display_id, title, role, count):
+    """
+    Uses a sparql query to obtain information about the most used parts and format the data in such a way
+    that a graph can be made comparing the poi (part of interest) to the most used parts
+    
+    Requirements
+    -------
+    import pandas as pd
+    import requests
+    import json
+    from pandas.io.json import json_normalize
+    Most_Used_Query.txt
+    
+    Parameters
+    ----------
+    uri : string
+        the unique identifier of a part, note that due to spoofing it may not be the same as the url
+        e.g. uri = 'https://synbiohub.org/public/igem/BBa_E0040/1' (url may be https://dev.synbiohub.org/public/igem/BBa_E0040/1)
+    instance : string
+        the synbiohub instance where information is to be retrieved from (where the sparql query is to be run)
+        e.g. 'https://synbiohub.org/'
+    display_id: string
+        The display id of the poi e.g. 'BBa_E0040'
+    title: string
+        The human readable name of the poi e.g. 'GFP'
+    role: string
+        The number (as a string) of the sequence ontology of the role of the poi e.g. '0000316'    
+    count: integer
+        The number of times the poi is used (how often it is a subpart) e.g. 2348
+        
+    Returns
+    -------
+    bar_df: pandas dataframe, shape(11,6)
+        columns are ['count', 'deff', 'displayId', 'roletog', 'title', 'color']
+   
+    Example
+    --------
+    
+    
+    """
     
     #get part url from uri
     part_url = uri.replace(uri[:uri.find('/', 8)+1], instance)
