@@ -4,6 +4,68 @@ import json
 from pandas.io.json import json_normalize
 
 def most_used_by_type_bar(uri, instance, display_id, title, role, count):
+    """
+    Uses a sparql query to obtain information about the most used parts (of the same type as the poi e.g. all terminators)
+    and format the data in such a way that a graph can be made comparing the poi (part of interest) to the most used parts
+    of that role type.
+    
+    Requirements
+    -------
+    import pandas as pd
+    import requests
+    import json
+    from pandas.io.json import json_normalize
+    Most_Used_By_Type_Query.txt
+    
+    Parameters
+    ----------
+    uri : string
+        the unique identifier of a part, note that due to spoofing it may not be the same as the url
+        e.g. uri = 'https://synbiohub.org/public/igem/BBa_E0040/1' (url may be https://dev.synbiohub.org/public/igem/BBa_E0040/1)
+    instance : string
+        the synbiohub instance where information is to be retrieved from (where the sparql query is to be run)
+        e.g. 'https://synbiohub.org/'
+    display_id: string
+        The display id of the poi e.g. 'BBa_E0040'
+    title: string
+        The human readable name of the poi e.g. 'GFP'
+    role: string
+        The number (as a string) of the sequence ontology of the role of the poi e.g. '0000316'    
+    count: integer
+        The number of times the poi is used (how often it is a subpart) e.g. 2348
+   
+    Returns
+    -------
+    bar_df: pandas dataframe, shape(11,6)
+        columns are ['count', 'deff', 'displayId', 'roletog', 'title', 'color']
+    
+    Example
+    --------
+    display_id = 'BBa_E0040'
+    title = 'GFP'
+    role = '0000316'
+    count = 2348
+    
+    uri = 'https://synbiohub.org/public/igem/BBa_E0040/1'
+    instance = 'https://dev.synbiohub.org/'
+    
+    bar_df = most_used_by_type_bar(uri, instance, display_id, title, role, count)
+    
+    Output:
+    count,deff,displayId,roletog,title,color
+    948,'https://synbiohub.org/public/igem/BBa_E1010/1','BBa_E1010','http://identifiers.org/so/SO:0000316','mRFP1','rgba(119,157,205,1)'
+    830,'https://synbiohub.org/public/igem/BBa_C0051/1','BBa_C0051','http://identifiers.org/so/SO:0000316','CI lam','rgba(119,157,205,1)'
+    766,'https://synbiohub.org/public/igem/BBa_C0040/1','BBa_C0040','http://identifiers.org/so/SO:0000316','TetR','rgba(119,157,205,1)'
+    662,'https://synbiohub.org/public/igem/BBa_C0012/1','BBa_C0012','http://identifiers.org/so/SO:0000316','lacI','rgba(119,157,205,1)'
+    660,'https://synbiohub.org/public/igem/BBa_C0062/1','BBa_C0062','http://identifiers.org/so/SO:0000316','luxr','rgba(119,157,205,1)'
+    640,'https://synbiohub.org/public/igem/BBa_E0030/1','BBa_E0030','http://identifiers.org/so/SO:0000316','eyfp','rgba(119,157,205,1)'
+    538,'https://synbiohub.org/public/igem/BBa_C0061/1','BBa_C0061','http://identifiers.org/so/SO:0000316','luxI','rgba(119,157,205,1)'
+    342,'https://synbiohub.org/public/igem/BBa_E0020/1','BBa_E0020','http://identifiers.org/so/SO:0000316','ecfp','rgba(119,157,205,1)'
+    202,'https://synbiohub.org/public/igem/BBa_C0060/1','BBa_C0060','http://identifiers.org/so/SO:0000316','aiiA','rgba(119,157,205,1)'
+    186,'https://synbiohub.org/public/igem/BBa_I732006/1','BBa_I732006','http://identifiers.org/so/SO:0000316','lacZ-alpha','rgba(119,157,205,1)'
+    2348,'https://synbiohub.org/public/igem/BBa_E0040/1','BBa_E0040','http://identifiers.org/so/SO:0000316','GFP','rgba(119,157,205,1)'
+
+    """
     
     #get part url from uri
     part_url = uri.replace(uri[:uri.find('/', 8)+1], instance)
@@ -58,8 +120,7 @@ def most_used_by_type_bar(uri, instance, display_id, title, role, count):
         'http://identifiers.org/so/SO:0000167': 'rgba(4,187,61,1)', 
         'http://identifiers.org/so/SO:0000139':'rgba(149,110,219,1)',
         'http://identifiers.org/so/SO:0000316':'rgba(119,157,205,1)',
-        'http://identifiers.org/so/SO:0000141':'rgba(202,58,32,1)',
-        
+        'http://identifiers.org/so/SO:0000141':'rgba(202,58,32,1)'
     }
         
     #get full identifiers form of role
