@@ -40,12 +40,33 @@ def most_used_bar(uri, instance, display_id, title, role, count):
    
     Example
     --------
+    display_id = 'BBa_E0040'
+    title = 'GFP'
+    role = '0000316'
+    count = 2348
     
+    uri = 'https://synbiohub.org/public/igem/BBa_E0040/1'
+    instance = 'https://dev.synbiohub.org/'
     
+    bar_df = most_used_bar(uri, instance, display_id, title, role, count)
+    
+    Output:
+    count,deff,displayId,roletog,title,color
+    12824,'https://synbiohub.org/public/igem/BBa_B0034/1','BBa_B0034','http://identifiers.org/so/SO:0000139','BBa_B0034','rgba(149,110,219,1)'
+    9052,'https://synbiohub.org/public/igem/BBa_B0012/1','BBa_B0012','http://identifiers.org/so/SO:0000141','BBa_B0012','rgba(202,58,32,1)'
+    8742,'https://synbiohub.org/public/igem/BBa_B0010/1','BBa_B0010','http://identifiers.org/so/SO:0000141','BBa_B0010','rgba(202,58,32,1)'
+    4658,'https://synbiohub.org/public/igem/BBa_B0015/1','BBa_B0015','http://identifiers.org/so/SO:0000141','BBa_B0015','rgba(202,58,32,1)'
+    2686,'https://synbiohub.org/public/igem/BBa_R0040/1','BBa_R0040','http://identifiers.org/so/SO:0000167','p(tetR)','rgba(4,187,61,1)'
+    2550,'https://synbiohub.org/public/igem/BBa_J176041/1','BBa_J176041','http://identifiers.org/so/SO:0000110','scar','rgba(255, 128,0,1)'
+    2030,'https://synbiohub.org/public/igem/BBa_B0030/1','BBa_B0030','http://identifiers.org/so/SO:0000139','BBa_B0030', 'rgba(149,110,219,1)'
+    1902,'https://synbiohub.org/public/igem/BBa_B0032/1','BBa_B0032','http://identifiers.org/so/SO:0000139','BBa_B0032','rgba(149,110,219,1)'
+    1876,'https://synbiohub.org/public/igem/BBa_R0010/1','BBa_R0010','http://identifiers.org/so/SO:0000167','LacI','rgba(4,187,61,1)'
+    1306,'https://synbiohub.org/public/igem/BBa_R0011/1','BBa_R0011','http://identifiers.org/so/SO:0000167','lacI+pL','rgba(4,187,61,1)'
+    2348,'https://synbiohub.org/public/igem/BBa_E0040/1','BBa_E0040','http://identifiers.org/so/SO:0000316','GFP','rgba(119,157,205,1)'
     """
     
     #get part url from uri
-    part_url = uri.replace(uri[:uri.find('/', 8)+1], instance)
+    part_url = uri.replace(uri[:uri.find('/', 8)+2], instance)
     
     #read in the query to find the top most used parts
     fl = open("Most_Used_Query.txt", "r")
