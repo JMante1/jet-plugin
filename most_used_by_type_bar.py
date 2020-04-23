@@ -85,35 +85,35 @@ def most_used_by_type_bar(uri, instance, display_id, title, role, count):
     
     #format the data
     d = json.loads(r.text)
-    bars_df = json_normalize(d['results']['bindings'])
+    bar_df = json_normalize(d['results']['bindings'])
     
     #rename the columns from ['count.datatype', 'count.type', 'count.value',
     #        'def.type', 'def.value', 'displayId.type', 'displayId.value', 
     #        'role.type', 'role.value', 'title.type', 'title.value']
-    bars_df.columns = ['cd', 'ct','count', 'dt', 'deff', 'dist', 'displayId',
+    bar_df.columns = ['cd', 'ct','count', 'dt', 'deff', 'dist', 'displayId',
                        'rt', 'roletog', 'tt', 'title']
     
     #drop unneeded columns
-    bars_df = bars_df.drop(['cd', 'ct', 'dt', 'dist', 'rt', 'tt'], axis=1)
+    bar_df = bar_df.drop(['cd', 'ct', 'dt', 'dist', 'rt', 'tt'], axis=1)
     
     #remove the poi if it appears in the data
-    bars_df = bars_df[bars_df.displayId != display_id]
+    bar_df = bar_df[bar_df.displayId != display_id]
     
     #incase the poi was dropped reset the index (needed for colours to work)
-    bars_df.reset_index(drop=True, inplace = True)
+    bar_df.reset_index(drop=True, inplace = True)
     
     #make sure it still works if less than 11 parts are present in the database
-    robustness = min(10, len(bars_df)-1)
+    robustness = min(10, len(bar_df)-1)
     
     #only accept the top robustness parts (usually the top eleven most used parts)
-    bars_df = bars_df.iloc[0:robustness+1]
+    bar_df = bar_df.iloc[0:robustness+1]
     
     #replace uris with urls
     bar_df['deff'] = uri_to_url(bar_df['deff'], instance, spoofed_instance)
         
     #change the final row in the dataframe (usually row 11)
     #to contain the information about the poi
-    bars_df.iloc[robustness] = [count,part_url,display_id,
+    bar_df.iloc[robustness] = [count,part_url,display_id,
                "http://identifiers.org/so/SO:"+str(role),title]
     
     #define what colour each role should get (other is ignored)
@@ -134,12 +134,12 @@ def most_used_by_type_bar(uri, instance, display_id, title, role, count):
         colours = ["rgba(255, 128,0,1)"] #oran geif part type is other
         
     #ensure the length of colours is as long as the dataframe (generally 10)
-    colours = colours*len(bars_df.index) 
+    colours = colours*len(bar_df.index) 
     
     #add the column  colour to the dataframe
-    bars_df['color'] = pd.Series(colours, index=bars_df.index)
+    bar_df['color'] = pd.Series(colours, index=bar_df.index)
     
     #if columns lack a human readable name used the displayid instead
-    bars_df.title[bars_df.title.isnull()] = bars_df.displayId[bars_df.title.isnull()]
+    bar_df.title[bar_df.title.isnull()] = bar_df.displayId[bar_df.title.isnull()]
     
-    return(bars_df)
+    return(bar_df)
