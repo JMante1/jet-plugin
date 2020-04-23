@@ -42,21 +42,30 @@ def uri_to_url(data, instance, spoofed_instance):
     1    https://dev.synbiohub.org/public/igem/BBa_C0051/1
     2    https://dev.synbiohub.org/public/igem/BBa_C0040/1
     """
+    #checks if any changes need to be made
+    if spoofed_insance != instance:
+        
+        #finds the data type of the input data
+        data_type = type(data)
 
-    #finds the data type of the input data
-    data_type = type(data)
+        #case that it is a column of a pandas dataframe (i.e. it is a Pandas Series)
+        if data_type == pd.core.series.Series:
+            
+            for idx, deff in data.items():
+              #find the instance used int the cell
+              uri_instance = deff[:deff.find('/', 8)+1]
+              
+              #if the current instance is the spoofed_instance we want to change replace it with the new instance
+              if uri_instance == spoofed_instance:
+                data[idx] = deff.replace(uri_instance, instance) 
 
-    #case that it is a column of a pandas dataframe (i.e. it is a Pandas Series)
-    if data_type == pd.core.series.Series:
-        for idx, deff in data.items():
-          uri_instance = deff[:deff.find('/', 8)+1]
-          if uri_instance == spoofed_instance:
-            data[idx] = deff.replace(uri_instance, instance) 
-
-    #case that it is a simple string
-    elif data_type == str:
-        uri_instance = deff[:deff.find('/', 8)+1]
-        if uri_instance == spoofed_instance:
-            data = data.replace(data[:data.find('/', 8)+1], instance) 
+        #case that it is a simple string
+        elif data_type == str:
+            #find the instance used int the cell
+            uri_instance = deff[:deff.find('/', 8)+1]
+            
+            #if the current instance is the spoofed_instance we want to change replace it with the new instance
+            if uri_instance == spoofed_instance:
+                data = data.replace(data[:data.find('/', 8)+1], instance) 
       
   return(data)
