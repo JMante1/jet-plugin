@@ -32,8 +32,7 @@ def input_data(uri, instance):
     title: string
         The human readable name of the poi e.g. 'GFP'
     role: string
-        The number (as a string) of the sequence ontology of the role of the poi e.g. '0000316'
-        
+        The number (as a string) of the sequence ontology of the role of the poi e.g. '0000316'    
     count: integer
         The number of times the poi is used (how often it is a subpart) e.g. 2348
        
