@@ -105,7 +105,7 @@ def wrapper2():
         graph_title = f'Top Ten Parts by Number of Uses Compared to <a href="{url}" target="_blank">{title}</a>'
 
         #where to save the file
-        filename1= os.path.join(cwd, f'bar1_{display_id}_.html')
+        filename1= os.path.join(cwd, f'bar1_{display_id}.html')
 
         #create the most used barchart
         bar_plot('title','count','color',bar_df, graph_title, filename1, 'deff')
@@ -126,7 +126,7 @@ def wrapper2():
         graph_title = f'Top Ten {role_link} by Number of Uses Compared to <a href="{url}" target="_blank">{title}</a>'
 
         #where to save the file
-        filename2= os.path.join(cwd, f'bar2_{display_id}_.html')
+        filename2= os.path.join(cwd, f'bar2_{display_id}.html')
 
         #create the most used barchart
         bar_plot('title','count','color',bar_df, graph_title, filename2, 'deff')
