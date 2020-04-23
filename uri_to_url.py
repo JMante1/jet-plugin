@@ -62,10 +62,10 @@ def uri_to_url(data, instance, spoofed_instance):
         #case that it is a simple string
         elif data_type == str:
             #find the instance used int the cell
-            uri_instance = deff[:deff.find('/', 8)+1]
+            uri_instance = data[:data.find('/', 8)+1]
             
             #if the current instance is the spoofed_instance we want to change replace it with the new instance
             if uri_instance == spoofed_instance:
-                data = data.replace(data[:data.find('/', 8)+1], instance) 
+                data = data.replace(uri_instance, instance) 
       
   return(data)
