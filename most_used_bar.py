@@ -2,6 +2,7 @@ import pandas as pd
 import requests
 import json
 from pandas.io.json import json_normalize
+from uri_to_url import uri_to_url
 
 def most_used_bar(uri, instance, display_id, title, role, count):
     """
@@ -14,6 +15,7 @@ def most_used_bar(uri, instance, display_id, title, role, count):
     import requests
     import json
     from pandas.io.json import json_normalize
+    from uri_to_url import uri_to_url
     Most_Used_Query.txt
     
     Parameters
@@ -64,9 +66,11 @@ def most_used_bar(uri, instance, display_id, title, role, count):
     1306,'https://synbiohub.org/public/igem/BBa_R0011/1','BBa_R0011','http://identifiers.org/so/SO:0000167','lacI+pL','rgba(4,187,61,1)'
     2348,'https://synbiohub.org/public/igem/BBa_E0040/1','BBa_E0040','http://identifiers.org/so/SO:0000316','GFP','rgba(119,157,205,1)'
     """
+    #if spoofing is happening the uri instance is different than the instance
+    spoofed_instance = uri[:uri.find('/', 8)+1]
     
     #get part url from uri
-    part_url = uri.replace(uri[:uri.find('/', 8)+1], instance)
+    part_url = uri_to_url(uri, instance, spoofed_instance)
     
     #read in the query to find the top most used parts
     fl = open("Most_Used_Query.txt", "r")
@@ -102,8 +106,7 @@ def most_used_bar(uri, instance, display_id, title, role, count):
     bar_df = bar_df.iloc[0:robustness+1]
     
     #replace uris with urls
-    for idx, deff in bar_df['deff'].items():
-        bar_df['deff'][idx] = deff.replace(deff[:deff.find('/', 8)+1], instance)   
+    bar_df['deff'] = uri_to_url(bar_df['deff'], instance, spoofed_instance)
 
     #change the final row in the dataframe (usually row 11)
     #to contain the information about the poi
