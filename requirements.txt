@@ -1,3 +1,4 @@
+cython
 attrs==19.1.0
 beautifulsoup4==4.7.1
 bs4==0.0.1
