@@ -68,4 +68,4 @@ def uri_to_url(data, instance, spoofed_instance):
             if uri_instance == spoofed_instance:
                 data = data.replace(uri_instance, instance) 
       
-  return(data)
+return(data)
