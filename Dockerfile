@@ -14,4 +14,6 @@ EXPOSE 5000
 
 RUN pip3 install -r requirements.txt
 
-CMD ["python3", "app.py"]
+ENV FLASK_APP=app.py
+
+CMD ["python3", "-m", "flask", "run"]
