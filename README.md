@@ -1,6 +1,6 @@
 # INSTALL
 ## Docker
-Run `docker run --publish 8080:5000 --detach --name snap-submit-plug synbiohub/component-use-plugin:snapshot` Check it is up using localhost:8080/sankey/status
+Run `docker run --publish 8080:5000 --detach --name component-use-plug synbiohub/component-use-plugin:snapshot` Check it is up using localhost:8080/sankey/status
 
 ## Python
 Using python run pip install -r requirements.txt to install the requirements. 
