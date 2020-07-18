@@ -27,7 +27,7 @@ def Sankey_Evaluate():
     
     ########## REPLACE THIS SECTION WITH OWN RUN CODE #################
     #uses rdf types
-    accepted_types = {'ComponentDefinition'}
+    accepted_types = {'Component'}
     
     acceptable = rdf_type in accepted_types
     
