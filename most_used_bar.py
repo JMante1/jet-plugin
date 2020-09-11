@@ -1,7 +1,7 @@
 import pandas as pd
 import requests
 import json
-from pandas.io.json import json_normalize
+from pandas import json_normalize
 from uri_to_url import uri_to_url
 
 def most_used_bar(uri, instance, display_id, title, role, count):
@@ -14,7 +14,7 @@ def most_used_bar(uri, instance, display_id, title, role, count):
     import pandas as pd
     import requests
     import json
-    from pandas.io.json import json_normalize
+    from pandas import json_normalize
     from uri_to_url import uri_to_url
     Most_Used_Query.txt
     
@@ -84,11 +84,10 @@ def most_used_bar(uri, instance, display_id, title, role, count):
     d = json.loads(r.text)
     bar_df = json_normalize(d['results']['bindings'])
     
-    #rename columns from ['count.datatype', 'count.type', 'count.value', 
-    #        'def.type', 'def.value', 'displayId.type', 'displayId.value', 
-    #        'role.type', 'role.value', 'title.type', 'title.value']
-    bar_df.columns = ['cd', 'ct','count', 'dt', 'deff', 'dist', 'displayId',
-                      'rt', 'roletog', 'tt', 'title']
+    
+    #rename columns
+    rename_dict = {'count.datatype':'cd', 'count.type':'ct', 'count.value':'count', 'def.type':'dt', 'def.value':'deff', 'displayId.type':'dist', 'displayId.value':'displayId', 'role.type':'rt', 'role.value':'roletog', 'title.type':'tt', 'title.value':'title'}
+    bar_df.columns = [rename_dict[col] for col in bar_df.columns]
     
     #drop unneeded columns
     bar_df = bar_df.drop(['cd', 'ct', 'dt', 'dist', 'rt', 'tt'], axis=1)
@@ -109,9 +108,10 @@ def most_used_bar(uri, instance, display_id, title, role, count):
     bar_df['deff'] = uri_to_url(bar_df['deff'], instance, spoofed_instance)
 
     #change the final row in the dataframe (usually row 11)
-    #to contain the information about the poi
-    bar_df.iloc[robustness] = [count,part_url,display_id,
-               "http://identifiers.org/so/SO:"+str(role),title]
+    #poi row is added like this so the ordering of the columns doesn't have to match
+    poi_row = pd.DataFrame.from_dict({'displayId':[display_id], 'title':[title], 'count':[count],
+                 'roletog':[f"http://identifiers.org/so/SO:{str(role)}"], 'deff':[part_url]})
+    bar_df.iloc[robustness] = poi_row.iloc[0]
     
     #define what colour each role should get (other is ignored)
     colormap = {

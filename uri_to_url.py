@@ -43,7 +43,7 @@ def uri_to_url(data, instance, spoofed_instance):
     2    https://dev.synbiohub.org/public/igem/BBa_C0040/1
     """
     #checks if any changes need to be made
-    if spoofed_insance != instance:
+    if spoofed_instance != instance:
         
         #finds the data type of the input data
         data_type = type(data)

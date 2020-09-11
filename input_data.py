@@ -1,6 +1,6 @@
 import json
 import requests
-from pandas.io.json import json_normalize
+from pandas import json_normalize
 
 def input_data(uri, instance):
     """
@@ -71,11 +71,10 @@ def input_data(uri, instance):
         #format responses
         d = json.loads(r.text)
         a = json_normalize(d['results']['bindings'])
-
-        #renames columns from ['count.datatype', 'count.type', 'count.value', 'def.type', 'def.value',
-        #   'displayId.type', 'displayId.value', 'role.type', 'role.value',
-        #   'title.type', 'title.value']
-        a.columns = ['cd', 'ct','count', 'dt', 'deff', 'dist', 'displayId','rt', 'roletog', 'tt', 'title']
+        
+        #renames columns
+        rename_dict = {'count.datatype':'cd', 'count.type':'ct', 'count.value':'count', 'def.type':'dt', 'def.value':'deff', 'displayId.type':'dist', 'displayId.value':'displayId', 'role.type':'rt', 'role.value':'roletog', 'title.type':'tt', 'title.value':'title'}
+        a.columns = [rename_dict[col] for col in a.columns]
         
         #split column roletog at SO: to leave the http://identifiers.org/so in the column http
         #and the roler number (e.g. 0000141) in the column role

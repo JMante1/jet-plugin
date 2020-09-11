@@ -1,7 +1,7 @@
 import requests
 import json
 import pandas as pd
-from pandas.io.json import json_normalize
+from pandas import json_normalize
 from uri_to_url import uri_to_url
 
 def sankey(url, uri, title, instance):
@@ -64,13 +64,10 @@ def sankey(url, uri, title, instance):
     d = json.loads(r.text)
     order_df = json_normalize(d['results']['bindings'])
     
-    #rename columns from ['average_preceeding.datatype', 'average_preceeding.type',
-    #       'average_preceeding.value', 'count.datatype', 'count.type',
-    #       'count.value', 'def2.type', 'def2.value', 'displayId.type',
-    #       'displayId.value', 'role.type', 'role.value', 'title.type',
-    #      'title.value']
-    order_df.columns = ['ad', 'at','centfol', 'cd', 'ct', 'count', 'dt','deff', 'dt1', 'displayId','rt', 'roletog', 'tt','title']
-    
+    #rename columns
+    rename_dict = {'average_preceeding.datatype':'ad', 'average_preceeding.type':'at', 'average_preceeding.value':'centfol', 'count.datatype':'cd', 'count.type':'ct', 'count.value':'count', 'def2.type':'dt', 'def2.value':'deff', 'displayId.type':'dt1', 'displayId.value':'displayId', 'role.type':'rt', 'role.value':'roletog', 'title.type':'tt', 'title.value':'title'}
+    order_df.columns = [rename_dict[col] for col in order_df.columns]
+
     #drop unneeded columns
     order_df = order_df.drop(['ad', 'at', 'cd', 'ct', 'dt', 'dt1', 'rt', 'tt'], axis=1)
     
@@ -85,6 +82,7 @@ def sankey(url, uri, title, instance):
     #'roletog' - role of the part (e.g. http://identifiers.org/so/SO:0000141)
     #'title' - human name of the part
     """
+    
     #change number columns from strings to number type
     order_df['count'] = order_df['count'].apply(pd.to_numeric)
     order_df['centfol'] = order_df['centfol'].apply(pd.to_numeric)
