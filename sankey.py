@@ -1,7 +1,7 @@
 import requests
 import json
 import pandas as pd
-from pandas import json_normalize
+from pandas.io.json import json_normalize
 from uri_to_url import uri_to_url
 
 def sankey(url, uri, title, instance):
