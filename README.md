@@ -1,4 +1,4 @@
-# INSTALL
+# INSTALL 
 ## Docker
 Run `docker run --publish 8080:5000 --detach --name component-use-plug synbiohub/plugin-visual-component-use` Check it is up using localhost:8080/sankey/status
 
